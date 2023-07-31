@@ -122,76 +122,44 @@ app.post('/login', async (req,res)=>{
         })
     }
 }
+    )
+    app.get('/clientes', async (req, res) => {
+
+        const personas = await Usuario.find({},
+            {
+                "nombre": 1,
+                "apellido": 1,
+                "email": 1,
+                "timestamp": 1
+            });
     
-
-
-)
-app.get('/clientes', async (req, res) => {
-
-    const personas = await Usuario.find({},
-        {
-            "nombre": 1,
-            "apellido": 1,
-            "email": 1,
-            "timestamp": 1
-        });
-
-    console.log(personas);
-
-    res.json({
-        personas 
+        console.log(personas);
+    
+        res.json({
+            personas 
+        })
+    
     })
-
-})
-
-
-app.delete('/clientes/:id', async (req, res) => {
-
-    const id = req.params.id;
     
-    console.log(id);
     
-    try {
-        const deleteUser = await Usuario.findByIdAndDelete(id);
-        console.log(deleteUser);
-        if(deleteUser){
-            console.log('Cliente Eliminado');
-            return res.status(200).send();
-        }else{
-            return res.status(404).send();
+    app.delete('/clientes/:id', async (req, res) => {
+    
+        const id = req.params.id;
+        
+        console.log(id);
+        
+        try {
+            const deleteUser = await Usuario.findByIdAndDelete(id);
+            console.log(deleteUser);
+            if(deleteUser){
+                console.log('Cliente Eliminado');
+                return res.status(200).send();
+            }else{
+                return res.status(404).send();
+            }
+        } catch (error) {
+            console.log(error);
         }
-    } catch (error) {
-        console.log(error);
-    }
-
-})
-
-
-app.put('/clientes/:id', async (req, res) => {
-
-    const id = req.params.id;
-
-    const data = {
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        email: req.body.email,
-        password: req.body.password
-    }
-
-    console.log(data);
-    console.log(id);
     
-    try {
-        const updateUser = await Usuario.findByIdAndUpdate(id, data);
-        console.log(updateUser);
-        if(updateUser){
-            console.log('Cliente Actualizado');
-            return res.status(200).send();
-        }else{
-            return res.status(404).send();
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-})
+    })
+    module.exports = app;
